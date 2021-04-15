@@ -1,0 +1,173 @@
+{
+    "conversationId": "1bc96a39-6725-40c4-9345-db72aa67b8c6",
+    "conversationStart": "2021-04-01T12:27:53.386Z",
+    "conversationEnd": "2021-04-01T12:43:23.306Z",
+    "originatingDirection": "inbound",
+    "divisionIds": [
+        "1b6b98a6-3d70-47be-9406-61a5aa8cc570"
+    ],
+    "participants": [
+        {
+            "participantId": "8d4f84b1-3edb-4d4e-9665-4ae6a0af6147",
+            "participantName": "John Doe",
+            "purpose": "customer",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "4d3a7227-6fdc-4d60-97fe-99db88e00b51",
+                    "direction": "inbound",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-01T12:27:53.386Z",
+                            "segmentEnd": "2021-04-01T12:43:23.303Z",
+                            "queueId": "a623d83c-96d7-4baa-af1f-d46ad6700d8b",
+                            "disconnectType": "timeout",
+                            "segmentType": "interact",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "nConnected",
+                            "value": 1,
+                            "emitDate": "2021-04-01T12:27:53.386Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "usedRouting": "Standard",
+                    "selectedAgentId": "50fcd33c-f432-4726-abc9-979f3ca01555"
+                }
+            ]
+        },
+        {
+            "participantId": "9791b7b2-8b76-40bb-8e8e-b218aacb3ea4",
+            "participantName": "Yuri",
+            "purpose": "acd",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "6acbee65-80be-4777-be03-8dacd07ee3f9",
+                    "direction": "inbound",
+                    "peerId": "4d3a7227-6fdc-4d60-97fe-99db88e00b51",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-01T12:27:53.388Z",
+                            "segmentEnd": "2021-04-01T12:28:04.567Z",
+                            "queueId": "a623d83c-96d7-4baa-af1f-d46ad6700d8b",
+                            "disconnectType": "transfer",
+                            "segmentType": "interact",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "nOffered",
+                            "value": 1,
+                            "emitDate": "2021-04-01T12:27:53.388Z"
+                        },
+                        {
+                            "name": "tAcd",
+                            "value": 11179,
+                            "emitDate": "2021-04-01T12:28:04.567Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "remote": "John Doe",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "selectedAgentId": "50fcd33c-f432-4726-abc9-979f3ca01555"
+                }
+            ]
+        },
+        {
+            "participantId": "ce60611f-07c6-4d57-9539-b8b26abe9f3a",
+            "userId": "50fcd33c-f432-4726-abc9-979f3ca01555",
+            "purpose": "agent",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "b9ea3521-176e-4916-af7d-240732fc4680",
+                    "direction": "inbound",
+                    "peerId": "4d3a7227-6fdc-4d60-97fe-99db88e00b51",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-01T12:27:53.519Z",
+                            "segmentEnd": "2021-04-01T12:28:04.569Z",
+                            "queueId": "a623d83c-96d7-4baa-af1f-d46ad6700d8b",
+                            "segmentType": "alert",
+                            "conference": false
+                        },
+                        {
+                            "segmentStart": "2021-04-01T12:28:04.569Z",
+                            "segmentEnd": "2021-04-01T12:34:19.130Z",
+                            "queueId": "a623d83c-96d7-4baa-af1f-d46ad6700d8b",
+                            "segmentType": "interact",
+                            "conference": false
+                        },
+                        {
+                            "segmentStart": "2021-04-01T12:34:19.130Z",
+                            "segmentEnd": "2021-04-01T12:43:23.306Z",
+                            "queueId": "a623d83c-96d7-4baa-af1f-d46ad6700d8b",
+                            "disconnectType": "peer",
+                            "segmentType": "hold",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "tAlert",
+                            "value": 11050,
+                            "emitDate": "2021-04-01T12:28:04.569Z"
+                        },
+                        {
+                            "name": "tAnswered",
+                            "value": 11179,
+                            "emitDate": "2021-04-01T12:28:04.569Z"
+                        },
+                        {
+                            "name": "tTalk",
+                            "value": 374561,
+                            "emitDate": "2021-04-01T12:34:19.130Z"
+                        },
+                        {
+                            "name": "tTalkComplete",
+                            "value": 374561,
+                            "emitDate": "2021-04-01T12:34:19.130Z"
+                        },
+                        {
+                            "name": "nError",
+                            "value": 1,
+                            "emitDate": "2021-04-01T12:43:23.306Z"
+                        },
+                        {
+                            "name": "tHandle",
+                            "value": 918737,
+                            "emitDate": "2021-04-01T12:43:23.306Z"
+                        },
+                        {
+                            "name": "tHeld",
+                            "value": 544176,
+                            "emitDate": "2021-04-01T12:43:23.306Z"
+                        },
+                        {
+                            "name": "tHeldComplete",
+                            "value": 544176,
+                            "emitDate": "2021-04-01T12:43:23.306Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "remote": "John Doe",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "usedRouting": "Standard",
+                    "selectedAgentId": "50fcd33c-f432-4726-abc9-979f3ca01555"
+                }
+            ]
+        }
+    ]
+}
