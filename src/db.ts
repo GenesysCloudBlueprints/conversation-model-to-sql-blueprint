@@ -8,30 +8,30 @@ const client = new Client(config.postgreSQL);
 const CONVERSATIONS = 'conversations';
 const PARTICIPANTS = 'participants';
 const SESSIONS = 'sessions';
-const SEGMENTS = 'segments';
+const SEGMENTS = 'segments';    
 const METRICS = 'metrics';
 
 // Create Queries
 const CREATE_CONVERSATIONS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${CONVERSATIONS}(
-    conversation_id                      VARCHAR(36) NOT NULL,
-    conversation_start                   VARCHAR(25) NOT NULL,
-    conversation_end                     VARCHAR(25),
-    media_stats_min_conversation_mos     INT,
-    media_stats_min_conversation_rfactor INT,
-    originating_direction                VARCHAR(8) NOT NULL,
-    division_ids                         VARCHAR(1000),
+    conversation_id                      CHAR(36) NOT NULL,
+    conversation_start                   VARCHAR NOT NULL,
+    conversation_end                     VARCHAR,
+    media_stats_min_conversation_mos     DECIMAL,
+    media_stats_min_conversation_rfactor DECIMAL,
+    originating_direction                VARCHAR NOT NULL,
+    division_ids                         VARCHAR,
     PRIMARY KEY(conversation_id)
  );
 `;
 
 const CREATE_PARTICIPANTS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${PARTICIPANTS}(
-    participant_id        VARCHAR(36) NOT NULL,
-    conversation_id       VARCHAR(36) NOT NULL,
-    participant_name      VARCHAR(255),
-    purpose               VARCHAR(20) NOT NULL,
-    user_id               VARCHAR(36),
+    participant_id        CHAR(36) NOT NULL,
+    conversation_id       CHAR(36) NOT NULL,
+    participant_name      VARCHAR,
+    purpose               VARCHAR NOT NULL,
+    user_id               CHAR(36),
     PRIMARY KEY(participant_id),
     CONSTRAINT conversation_id_fk
         FOREIGN KEY(conversation_id) 
@@ -41,16 +41,16 @@ CREATE TABLE IF NOT EXISTS ${PARTICIPANTS}(
 
 const CREATE_SESSIONS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${SESSIONS}(
-    session_id         VARCHAR(36) NOT NULL,
-    participant_id     VARCHAR(36) NOT NULL,
-    media_type         VARCHAR(20) NOT NULL,
-    direction          VARCHAR(8) NOT NULL,
-    peer_id            VARCHAR(36),
-    provider           VARCHAR(255) NOT NULL,
-    requested_routings VARCHAR(1000),
-    used_routing       VARCHAR(255),
-    selected_agent_id  VARCHAR(36),
-    remote             VARCHAR(255),
+    session_id         CHAR(36) NOT NULL,
+    participant_id     CHAR(36) NOT NULL,
+    media_type         VARCHAR NOT NULL,
+    direction          VARCHAR NOT NULL,
+    peer_id            CHAR(36),
+    provider           VARCHAR NOT NULL,
+    requested_routings VARCHAR,
+    used_routing       VARCHAR,
+    selected_agent_id  CHAR(36),
+    remote             VARCHAR,
     PRIMARY KEY(session_id),
     CONSTRAINT participant_id_fk
         FOREIGN KEY(participant_id) 
@@ -61,28 +61,29 @@ CREATE TABLE IF NOT EXISTS ${SESSIONS}(
 // segment_id is session_id + _ + segment_start + _ + segment_end
 const CREATE_SEGMENTS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${SEGMENTS}(
-    segment_id      VARCHAR(150) NOT NULL,
-    session_id      VARCHAR(36) NOT NULL,
-    segment_start   VARCHAR(25) NOT NULL,
-    segment_end     VARCHAR(25) NOT NULL,
-    segment_type    VARCHAR(20) NOT NULL,
+    segment_id      VARCHAR NOT NULL,
+    session_id      CHAR(36) NOT NULL,
+    segment_start   VARCHAR NOT NULL,
+    segment_end     VARCHAR NOT NULL,
+    segment_type    VARCHAR NOT NULL,
     conference      BOOLEAN NOT NULL,
-    disconnect_type VARCHAR(20),
-    queue_id        VARCHAR(36),
+    disconnect_type VARCHAR,
+    queue_id        CHAR(36),
     PRIMARY KEY(segment_id),
     CONSTRAINT session_id_fk
         FOREIGN KEY(session_id) 
             REFERENCES ${SESSIONS}(session_id)
 );
+
 `;
 // metric_id is session_id + _ + name + _ + value
 const CREATE_METRICS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${METRICS}(
-    metric_id  VARCHAR(150) NOT NULL,
-    session_id VARCHAR(36) NOT NULL,
-    name       VARCHAR(20) NOT NULL,
-    value      INT NOT NULL,
-    emit_date  VARCHAR(25) NOT NULL,
+    metric_id  VARCHAR NOT NULL,
+    session_id CHAR(36) NOT NULL,
+    name       VARCHAR NOT NULL,
+    value      BIGINT NOT NULL,
+    emit_date  VARCHAR NOT NULL,
     PRIMARY KEY(metric_id),
     CONSTRAINT session_id_fk
         FOREIGN KEY(session_id) 
@@ -92,7 +93,7 @@ CREATE TABLE IF NOT EXISTS ${METRICS}(
 
 // Insertion Queries
 const INSERT_CONVERSATIONS_TABLE_QUERY = `
-INSERT INTO ${CONVERSATIONS}(conversation_id, conversation_start, conversation_end, originating_direction, division_ids) VALUES($1, $2, $3, $4, $5) RETURNING *
+INSERT INTO ${CONVERSATIONS}(conversation_id, conversation_start, conversation_end, originating_direction, division_ids, media_stats_min_conversation_mos, media_stats_min_conversation_rfactor) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING *
 `;
 
 const INSERT_PARTICIPANTS_TABLE_QUERY = `
@@ -161,9 +162,9 @@ function generateConversation(data: any[]) {
     conversationEnd: data[0].conversation_end,
     originatingDirection: data[0].originating_direction,
     divisionIds: data[0].division_ids ? data[0].division_ids.split(',') : null,
-    mediaStatsMinConversationMos: data[0].media_stats_min_conversation_mos,
+    mediaStatsMinConversationMos: data[0].media_stats_min_conversation_mos ? Number(data[0].media_stats_min_conversation_mos) : null,
     mediaStatsMinConversationRFactor:
-      data[0].media_stats_min_conversation_rfactor,
+    data[0].media_stats_min_conversation_rfactor ? Number(data[0].media_stats_min_conversation_rfactor) : null,
     participants: generateParticipants(data),
   };
 }
@@ -252,7 +253,7 @@ function generateMetrics(rows: any[], sessionId: string) {
     metrics.push(
       clean({
         name: row.name,
-        value: row.value,
+        value: Number(row.value),
         emitDate: row.emit_date,
       })
     );
@@ -289,63 +290,73 @@ export const fetchConversation = async (conversationId: string) => {
 };
 
 export const insertConversation = async (conversation: any) => {
-  // Insert top-level conversation data
-  await insertData(INSERT_CONVERSATIONS_TABLE_QUERY, [
-    conversation.conversationId,
-    conversation.conversationStart,
-    conversation.conversationEnd,
-    conversation.originatingDirection,
-    conversation.divisionIds ? conversation.divisionIds.join(','): null,
-  ]);
-  for (const participant of conversation.participants) {
-    // Insert top-level participant data
-    await insertData(INSERT_PARTICIPANTS_TABLE_QUERY, [
-      participant.participantId,
+  try {
+    // Insert top-level conversation data
+    await client.query('BEGIN');
+    await insertData(INSERT_CONVERSATIONS_TABLE_QUERY, [
       conversation.conversationId,
-      participant.participantName,
-      participant.purpose,
-      participant.userId,
+      conversation.conversationStart,
+      conversation.conversationEnd,
+      conversation.originatingDirection,
+      conversation.divisionIds ? conversation.divisionIds.join(','): null,
+      conversation.mediaStatsMinConversationMos,
+      conversation.mediaStatsMinConversationRFactor,
     ]);
-    for (const session of participant.sessions) {
-      // Insert session data
-      await insertData(INSERT_SESSIONS_TABLE_QUERY, [
-        session.sessionId,
+    for (const participant of conversation.participants) {
+      // Insert top-level participant data
+      await insertData(INSERT_PARTICIPANTS_TABLE_QUERY, [
         participant.participantId,
-        session.mediaType,
-        session.direction,
-        session.peerId,
-        session.provider,
-        session.requestedRoutings ? session.requestedRoutings.join(','): null,
-        session.usedRouting,
-        session.selectedAgentId,
-        session.remote,
+        conversation.conversationId,
+        participant.participantName,
+        participant.purpose,
+        participant.userId,
       ]);
-      for (const segment of session.segments) {
-        const segmentId = `${session.sessionId}_${segment.segmentStart}_${segment.segmentEnd}`;
-        // Insert segment data
-        await insertData(INSERT_SEGMENTS_TABLE_QUERY, [
-          segmentId,
+      for (const session of participant.sessions) {
+        // Insert session data
+        await insertData(INSERT_SESSIONS_TABLE_QUERY, [
           session.sessionId,
-          segment.segmentStart,
-          segment.segmentEnd,
-          segment.segmentType,
-          segment.conference,
-          segment.disconnectType,
-          segment.queueId,
+          participant.participantId,
+          session.mediaType,
+          session.direction,
+          session.peerId,
+          session.provider,
+          session.requestedRoutings ? session.requestedRoutings.join(','): null,
+          session.usedRouting,
+          session.selectedAgentId,
+          session.remote,
         ]);
-      }
-      for (const metric of session.metrics) {
-        const metricId = `${session.sessionId}_${metric.name}_${metric.value}`;
-        // Insert metric data
-        await insertData(INSERT_METRICS_TABLE_QUERY, [
-          metricId,
-          session.sessionId,
-          metric.name,
-          metric.value,
-          metric.emitDate,
-        ]);
+        for (const segment of session.segments) {
+          const segmentId = `${session.sessionId}_${segment.segmentStart}_${segment.segmentEnd}`;
+          // Insert segment data
+          await insertData(INSERT_SEGMENTS_TABLE_QUERY, [
+            segmentId,
+            session.sessionId,
+            segment.segmentStart,
+            segment.segmentEnd,
+            segment.segmentType,
+            segment.conference,
+            segment.disconnectType,
+            segment.queueId,
+          ]);
+        }
+        for (const metric of session.metrics) {
+          const metricId = `${session.sessionId}_${metric.name}_${metric.value}`;
+          // Insert metric data
+          await insertData(INSERT_METRICS_TABLE_QUERY, [
+            metricId,
+            session.sessionId,
+            metric.name,
+            metric.value,
+            metric.emitDate,
+          ]);
+        }
       }
     }
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.log(`Error inserting conversation with ID: ${conversation.conversationId}`);
+    throw err;
   }
 };
 

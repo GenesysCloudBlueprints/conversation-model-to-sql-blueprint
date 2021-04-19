@@ -6,9 +6,10 @@
   "scripts": {
     "create-tables": "ts-node src/index.ts --create-tables",
     "insert-data": "ts-node src/index.ts --insert-data",
-    "fetch-data": "ts-node src/index.ts --fetch-data",
+    "compare-conversations": "ts-node src/index.ts --compare-conversations",
     "drop-tables": "ts-node src/index.ts --drop-tables",
-    "invoke-api": "ts-node src/index.ts --invoke-api"
+    "invoke-api": "ts-node src/index.ts --invoke-api",
+    "fetch-conversation": "ts-node src/index.ts --fetch-conversation"
   },
   "author": "ronan.watkins",
   "license": "MIT",

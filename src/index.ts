@@ -24,7 +24,7 @@ async function processArgs() {
         );
         console.log('Conversations inserted successfully');
         break;
-      case '--fetch-data':
+      case '--compare-conversations':
         var conversationFromFile = JSON.parse(
           fs.readFileSync('./conversations/conversation1.json', 'utf8')
         );
@@ -56,6 +56,16 @@ async function processArgs() {
             console.log(`Inserting conversation ${conversation.conversationId} into the database`);
             await db.insertConversation(conversation);
         }
+        break;
+      case '--fetch-conversation':
+        var conversationFromDb = await db.fetchConversation(
+          process.argv[3]
+        );
+        if (conversationFromDb)
+          console.log(JSON.stringify(conversationFromDb, null, 2));
+        break;
+      default:
+        console.log(`Do not understand \"${process.argv[3]}\"`);
     }
   } catch (err) {
     console.log(err.message);

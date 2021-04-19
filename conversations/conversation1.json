@@ -2,6 +2,8 @@
     "conversationId": "1bc96a39-6725-40c4-9345-db72aa67b8c6",
     "conversationStart": "2021-04-01T12:27:53.386Z",
     "conversationEnd": "2021-04-01T12:43:23.306Z",
+    "mediaStatsMinConversationMos": 4.882874965667725,
+    "mediaStatsMinConversationRFactor": 92.46395111083984,
     "originatingDirection": "inbound",
     "divisionIds": [
         "1b6b98a6-3d70-47be-9406-61a5aa8cc570"

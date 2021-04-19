@@ -4,7 +4,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: c0nversat1onMod3lToSql
       POSTGRES_USER: dbuser
       POSTGRES_DB: conversations_db
     volumes:
