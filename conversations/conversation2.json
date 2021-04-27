@@ -1,0 +1,140 @@
+{
+    "conversationId": "6acbee65-80be-4777-be03-8dacd07ee3f9",
+    "conversationStart": "2021-04-02T15:30:51.418Z",
+    "originatingDirection": "inbound",
+    "divisionIds": [
+        "d538d659-58b6-4b24-b978-f88c42b82713"
+    ],
+    "participants": [
+        {
+            "participantId": "5e84b5b5-eefa-4e70-96ab-3c3e6b21d47b",
+            "participantName": "Jane Doe",
+            "purpose": "customer",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "df07a42c-705e-49db-8ddd-d089723c1729",
+                    "direction": "inbound",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-2T15:30:51.418Z",
+                            "segmentEnd": "2021-04-2T15:46:21.288Z",
+                            "queueId": "7b06ecdb-3b2e-4cbc-88cf-13561fb55718",
+                            "disconnectType": "timeout",
+                            "segmentType": "interact",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "nConnected",
+                            "value": 1,
+                            "emitDate": "2021-04-2T15:30:51.418Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "usedRouting": "Standard",
+                    "selectedAgentId": "9f3b4669-8593-4c95-bd7d-ef92c50f5a86"
+                }
+            ]
+        },
+        {
+            "participantId": "25998341-ea35-4175-8d2e-1774c9de07c7",
+            "participantName": "Chat Participant",
+            "purpose": "acd",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "4b01b124-4e97-46bc-b7fb-719493630129",
+                    "direction": "inbound",
+                    "peerId": "df07a42c-705e-49db-8ddd-d089723c1729",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-2T15:30:51.422Z",
+                            "segmentEnd": "2021-04-2T15:30:57.806Z",
+                            "queueId": "7b06ecdb-3b2e-4cbc-88cf-13561fb55718",
+                            "disconnectType": "transfer",
+                            "segmentType": "interact",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "nOffered",
+                            "value": 1,
+                            "emitDate": "2021-04-2T15:30:51.422Z"
+                        },
+                        {
+                            "name": "tAcd",
+                            "value": 6384,
+                            "emitDate": "2021-04-2T15:30:57.806Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "remote": "Jane Doe",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "selectedAgentId": "9f3b4669-8593-4c95-bd7d-ef92c50f5a86"
+                }
+            ]
+        },
+        {
+            "participantId": "2abc57ce-c537-485d-9d3b-7ea535fd911f",
+            "userId": "9f3b4669-8593-4c95-bd7d-ef92c50f5a86",
+            "purpose": "agent",
+            "sessions": [
+                {
+                    "mediaType": "chat",
+                    "sessionId": "a97c248c-706b-4e76-86f2-94b12bfae825",
+                    "direction": "inbound",
+                    "peerId": "df07a42c-705e-49db-8ddd-d089723c1729",
+                    "segments": [
+                        {
+                            "segmentStart": "2021-04-2T15:30:51.577Z",
+                            "segmentEnd": "2021-04-2T15:30:57.809Z",
+                            "queueId": "7b06ecdb-3b2e-4cbc-88cf-13561fb55718",
+                            "segmentType": "alert",
+                            "conference": false
+                        },
+                        {
+                            "segmentStart": "2021-04-2T15:30:57.809Z",
+                            "segmentEnd": "2021-04-2T15:46:21.293Z",
+                            "queueId": "7b06ecdb-3b2e-4cbc-88cf-13561fb55718",
+                            "disconnectType": "peer",
+                            "segmentType": "interact",
+                            "conference": false
+                        }
+                    ],
+                    "metrics": [
+                        {
+                            "name": "tAlert",
+                            "value": 6232,
+                            "emitDate": "2021-04-2T15:30:57.809Z"
+                        },
+                        {
+                            "name": "tAnswered",
+                            "value": 6384,
+                            "emitDate": "2021-04-2T15:30:57.809Z"
+                        },
+                        {
+                            "name": "tTalk",
+                            "value": 923484,
+                            "emitDate": "2021-04-2T15:46:21.293Z"
+                        }
+                    ],
+                    "provider": "Webchat Provider",
+                    "remote": "Jane Doe",
+                    "requestedRoutings": [
+                        "Standard"
+                    ],
+                    "usedRouting": "Standard",
+                    "selectedAgentId": "9f3b4669-8593-4c95-bd7d-ef92c50f5a86"
+                }
+            ]
+        }
+    ]
+}

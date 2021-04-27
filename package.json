@@ -1,0 +1,30 @@
+{
+  "name": "conversation-model-to-sql-blueprint",
+  "version": "1.0.0",
+  "description": "Conversation model to SQL Blueprint",
+  "main": "src/index.ts",
+  "scripts": {
+    "create-tables": "ts-node src/index.ts --create-tables",
+    "insert-data": "ts-node src/index.ts --insert-data",
+    "compare-conversations": "ts-node src/index.ts --compare-conversations",
+    "drop-tables": "ts-node src/index.ts --drop-tables",
+    "invoke-api": "ts-node src/index.ts --invoke-api",
+    "fetch-conversation": "ts-node src/index.ts --fetch-conversation"
+  },
+  "author": "ronan.watkins",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "prettier-eslint": "^12.0.0",
+    "ts-node": "^9.1.1",
+    "tslint": "^6.1.3",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.168",
+    "@types/pg": "^7.14.11",
+    "lodash": "^4.17.21",
+    "pg": "^8.5.1",
+    "purecloud-platform-client-v2": "^110.0.0"
+  }
+}
