@@ -18,6 +18,7 @@ This Genesys Blueprint provides an example of how to design an SQL database for 
 * **Genesys Cloud** - A suite of Genesys cloud services for enterprise-grade communications, collaboration, and contact center management.
 * **[PostgreSQL](https://www.postgresql.org/)** - An open source object-relational database system.
 * **[Docker](https://www.docker.com/)** - A set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. Recommended version: 19.0.0
+* **[Docker Compose](https://docs.docker.com/compose/)** - A tool for defining and running multi-container Docker applications. Recommended version: 1.27.0
 * **[Node.js](https://nodejs.org/en/)** - An open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser. Recommended version: 15.0.0
 
 ## Software Development Kit (SDK)
@@ -33,7 +34,7 @@ This Genesys Blueprint provides an example of how to design an SQL database for 
 
 ### OAuth Credential Requirements
 
-Client Credentials are used to authenticate with the Genesys Cloud API. The following scopes are required for making the call to [POST 
+Client Credentials are used to authenticate with the Genesys Cloud API. The following permissions are required for making the call to [POST 
   /api/v2/analytics/conversations/details/query](/api/rest/v2/analytics/#post-api-v2-analytics-conversations-details-query)
 * analytics
 * analytics:readonly
@@ -215,7 +216,7 @@ The following steps outline how to get driver script running to show this design
 
 ### Create a Client Credentials OAuth Grant for Genesys Cloud
 
-1. If you don't already have Client Credentials with the required scopes, log in to your Genesys Cloud organization and create a new OAuth client that uses the Client Credentials Grant type with the required scopes. For more information, see [Create an OAuth client](https://help.mypurecloud.com/articles/create-an-oauth-client/ "Opens the Create an OAuth client article") in the Genesys Cloud Resource Center.
+1. If you don't already have Client Credentials containing a role with the required permissions, log in to your Genesys Cloud organization and create a new OAuth client that uses a Client Credentials Grant a suitable role. For more information, see [Create an OAuth client](https://help.mypurecloud.com/articles/create-an-oauth-client/ "Opens the Create an OAuth client article") in the Genesys Cloud Resource Center.
 2. In your local blueprint repository, open the [config.ts](https://github.com/GenesysCloudBlueprints/conversation-model-to-sql-blueprint/blob/main/src/config.ts) file. Add the client ID and secret from your OAuth client and specify the region where your Genesys Cloud organization is located, for example, `mypurecloud.ie` or `mypurecloud.com.au`.
 
 ### Start the docker container
