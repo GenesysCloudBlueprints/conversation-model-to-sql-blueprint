@@ -27,7 +27,7 @@ This Genesys Blueprint provides an example of how to design an SQL database for 
 ## Requirements
 
 ### Specialized knowledge
-* SQL - This Blueprint uses PostgreSQL but knowledge of any SQL flavour will work
+* SQL - This Blueprint uses PostgreSQL but knowledge of any SQL flavor will work
 * Typescript or Javascript - The driver has been written in Typescript using the Node.js runtime environment
 * Docker - Docker Compose has been used to simplify the interface with the docker container but an elementary knowledge of Docker would be helpful
 * Genesys Cloud Platform API knowledge
@@ -36,8 +36,7 @@ This Genesys Blueprint provides an example of how to design an SQL database for 
 
 Client Credentials are used to authenticate with the Genesys Cloud API. The following permissions are required for making the call to [POST 
   /api/v2/analytics/conversations/details/query](/api/rest/v2/analytics/#post-api-v2-analytics-conversations-details-query)
-* analytics
-* analytics:readonly
+* analytics:conversationDetail:view
 
 ## Database design
 
@@ -281,7 +280,7 @@ The output of the script should indicate that the conversations in the files are
 
 1. The following command can be ran to make an API call to [POST 
 /api/v2/analytics/conversations/details/query](/api/rest/v2/analytics/#post-api-v2-analytics-conversations-details-query) and insert the response data into the database.  
-The command takes a to and from date in ISO-8601 format, these dates must be no more than 1 week apart.
+The command takes a to and from date in ISO-8601 format. These dates must be no more than 1 week apart.
 
 ```
 npm run invoke-api [from_date] [to_date]
