@@ -20,7 +20,7 @@ export default {
         // docker-compose: environment.POSTGRES_USER
         user: 'dbuser',
         // docker-compose: environment.POSTGRES_PASSWORD
-        password: 'postgres',
+        password: 'c0nversat1onMod3lToSql',
         // docker-compose: environment.POSTGRES_DB
         database: 'conversations_db',
         // docker-compose: ports
