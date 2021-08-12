@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS ${PARTICIPANTS}(
 
 const CREATE_SESSIONS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${SESSIONS}(
-    session_id         CHAR(36) NOT NULL,
+    session_id         CHAR(73) NOT NULL,
     participant_id     CHAR(36) NOT NULL,
     media_type         VARCHAR NOT NULL,
     direction          VARCHAR NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS ${SESSIONS}(
 const CREATE_SEGMENTS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${SEGMENTS}(
     segment_id      VARCHAR NOT NULL,
-    session_id      CHAR(36) NOT NULL,
+    session_id      CHAR(73) NOT NULL,
     segment_start   VARCHAR NOT NULL,
     segment_end     VARCHAR NOT NULL,
     segment_type    VARCHAR NOT NULL,
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS ${SEGMENTS}(
 const CREATE_METRICS_TABLE_QUERY = `
 CREATE TABLE IF NOT EXISTS ${METRICS}(
     metric_id  VARCHAR NOT NULL,
-    session_id CHAR(36) NOT NULL,
+    session_id CHAR(73) NOT NULL,
     name       VARCHAR NOT NULL,
     value      BIGINT NOT NULL,
     emit_date  VARCHAR NOT NULL,
@@ -202,7 +202,7 @@ function generateSessions(rows: any[], participantId: string) {
     sessions.push(
       clean({
         mediaType: row.media_type,
-        sessionId: row.session_id,
+        sessionId: row.session_id.substring(0, row.session_id.indexOf("_")), // Remove conversationId from the sessionId for retrieval
         direction: row.direction,
         provider: row.provider,
         requestedRoutings: row.requested_routings ? row.requested_routings.split(',') : null,
@@ -312,9 +312,12 @@ export const insertConversation = async (conversation: any) => {
         participant.userId,
       ]);
       for (const session of participant.sessions) {
+        // sessionId in the database is a composite of sessionId and conversationId because sessionIds
+        // may be reused across different conversations but never in the same conversation
+        const sessionId = `${session.sessionId}_${conversation.conversationId}`;
         // Insert session data
         await insertData(INSERT_SESSIONS_TABLE_QUERY, [
-          session.sessionId,
+          sessionId,
           participant.participantId,
           session.mediaType,
           session.direction,
@@ -326,11 +329,11 @@ export const insertConversation = async (conversation: any) => {
           session.remote,
         ]);
         for (const segment of session.segments) {
-          const segmentId = `${session.sessionId}_${segment.segmentStart}_${segment.segmentEnd}`;
+          const segmentId = `${sessionId}_${segment.segmentStart}_${segment.segmentEnd}`;
           // Insert segment data
           await insertData(INSERT_SEGMENTS_TABLE_QUERY, [
             segmentId,
-            session.sessionId,
+            sessionId,
             segment.segmentStart,
             segment.segmentEnd,
             segment.segmentType,
@@ -340,11 +343,11 @@ export const insertConversation = async (conversation: any) => {
           ]);
         }
         for (const metric of session.metrics) {
-          const metricId = `${session.sessionId}_${metric.name}_${metric.value}`;
+          const metricId = `${sessionId}_${metric.name}_${metric.value}`;
           // Insert metric data
           await insertData(INSERT_METRICS_TABLE_QUERY, [
             metricId,
-            session.sessionId,
+            sessionId,
             metric.name,
             metric.value,
             metric.emitDate,
