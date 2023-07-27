@@ -8,6 +8,13 @@ category: 6
 summary: |
   This Genesys Cloud Developer Blueprint provides an example of how to design a SQL database for storing JSON data, specifically data from the [POST /api/v2/analytics/conversations/details/query](https://developer.genesys.cloud/api/rest/v2/analytics/ "Opens the Genesys Cloud Analytics API page") endpoint. This blueprint includes a Dockerized PostgreSQL database and a Node.js TypeScript driver.
 ---
+:::{"alert":"primary","title":"About Genesys Cloud Blueprints","autoCollapse":false} 
+Genesys Cloud blueprints were built to help you jump-start building an application or integrating with a third-party partner. 
+Blueprints are meant to outline how to build and deploy your solutions, not a production-ready turn-key solution.
+ 
+For more details on Genesys Cloud blueprint support and practices 
+please see our Genesys Cloud blueprint [FAQ](https://developer.genesys.cloud/blueprints/faq)sheet.
+:::
 
 This Genesys Cloud Developer Blueprint provides an example of how to design a SQL database for storing JSON data, specifically data from the [POST /api/v2/analytics/conversations/details/query](https://developer.genesys.cloud/api/rest/v2/analytics/ "Opens the Genesys Cloud Analytics API page") endpoint. This blueprint includes a Dockerized PostgreSQL database and a Node.js TypeScript driver.
 
